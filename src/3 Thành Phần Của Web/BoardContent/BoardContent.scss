@@ -1,0 +1,23 @@
+@import 'Gán Biến.scss';
+
+.board-content
+{
+    display: flex;
+    margin: 0 $gap $gap;
+    overflow-x: auto;//tạo thanh cuộn ngang khi tạo nhiều công việc (x là ngang y là dọc)
+    //thiết kế thanh kéo ngang của toàn web
+    &::-webkit-scrollbar
+    {
+    -webkit-appearance: none;
+    }
+    &::-webkit-scrollbar:horizontal
+    {
+    height: 11px;
+    }
+    &::-webkit-scrollbar-thumb
+    {
+    background-color: $common-element-bg;
+    border-radius: 8px;
+    }
+    
+}

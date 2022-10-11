@@ -1,0 +1,10 @@
+@import 'Gán Biến.scss';
+
+.navbar-board
+{
+    padding-left: $gap;
+    display: flex;
+    align-items: center;// căn chỉnh cho chữ nằm giữa mỗi cái chia từ cái (2)
+    background-color: $mauxanh;
+    font-size: 1.1rem;
+}

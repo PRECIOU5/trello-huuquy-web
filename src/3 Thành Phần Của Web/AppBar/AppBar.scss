@@ -1,0 +1,11 @@
+@import 'Gán Biến.scss';
+
+$mauphu:rgb(28, 87, 28);
+.navbar-app
+        {
+            padding-left: $gap;
+            display: flex;
+            align-items: center;// căn chỉnh cho chữ nằm giữa mỗi cái chia từ cái (2)
+            background-color: $mauphu;
+            font-size: 1.5rem;
+        }

@@ -1,0 +1,58 @@
+@import 'Gán Biến.scss';
+
+.column
+{
+    flex: 0 0 auto;
+    width: 300px;// chiều rộng cột công việc
+    height: calc(100% - #{$gap} );
+    &:not(:first-child)
+    {
+        margin-left: $gap;
+    }
+    > * // thiết kế thẻ công việc
+    {
+        background-color: $mauthanhcongviec;
+        color: #333;
+        padding: 0 8px;
+    }
+    header //đầu của bảng công việc
+    {
+        padding-left: 15px;
+        height: $chieucao-header;
+        line-height: $chieucao-header;
+        font-size: 16px;
+        font-weight: bold; 
+        border-top-left-radius: $chieucao-border-radius;
+        border-top-right-radius: $chieucao-border-radius;
+    }
+    footer //cuối của bảng công việc
+    {
+        padding-left: 10px;
+        height: $chieucao-footer;
+        line-height: $chieucao-footer;
+        border-bottom-left-radius: $chieucao-border-radius;
+        border-bottom-right-radius: $chieucao-border-radius;
+    }
+    ul.Task-list
+    {
+        list-style-type: none;
+        margin: 0;
+        max-height: calc(100% - #{$chieucao-header} - #{$chieucao-footer});
+        overflow-y: auto;//tạo thanh cuộn dọc khi tạo nhiều công việc (x là ngang y là dọc)
+        // thiết kế thanh kéo dọc của từng công việc 
+        &::-webkit-scrollbar
+        {
+        -webkit-appearance: none;
+        }
+        &::-webkit-scrollbar:vertical
+        {
+        width: 11px;
+        }
+        &::-webkit-scrollbar-thumb
+        {
+        background-color: darken($mauthanhcongviec,15);
+        border-right: 5px solid $mauthanhcongviec;
+        }
+        
+    }
+}
