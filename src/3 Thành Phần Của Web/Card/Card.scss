@@ -1,6 +1,6 @@
 @import 'Gán Biến.scss';
 
-li.Task-item
+li.Card-item
         {
             background-color: white;
             padding: $gap;
@@ -11,7 +11,7 @@ li.Task-item
                 margin-bottom: $gap;
             }
         }
-        img
+        img.card-cover
         {
             display: block;
             width: calc(100% + 2 *#{$gap});
