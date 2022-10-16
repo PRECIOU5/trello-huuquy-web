@@ -4,13 +4,19 @@
 $gap: 10px;
 $chieucao-header:36px;
 $chieucao-footer:36px;
-$chieucao-border-radius:5px;
+$chieucao-border-radius:4px; // độ tròn của thanh công việc
 $card-border-radius: 4px;
+$nav-app-height: 5vh;
+$nav-board-height: 6vh;
+$board-content-height:88vh;
+$column-height: calc( #{$board-content-height} - #{$gap * 2 } ) ;
 
 //Màu
 $mauxanh: green;
 $mauphu:rgb(28, 87, 28);
 $mauthanhcongviec:#ebecf0;
 $common-element-bg: rgba(255, 255, 255, 24);
+$app-main-text-color: #333;
+$Mau-danger:#ee5253;
 
 //screens

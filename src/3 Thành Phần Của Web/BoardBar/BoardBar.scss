@@ -2,6 +2,7 @@
 
 .navbar-board
 {
+    height: $nav-board-height;
     padding-left: $gap;
     display: flex;
     align-items: center;// căn chỉnh cho chữ nằm giữa mỗi cái chia từ cái (2)

@@ -4,18 +4,14 @@
 {
     flex: 0 0 auto;
     width: 300px;// chiều rộng cột công việc
-    height: calc(100% - #{$gap} );
-    &:not(:first-child)
-    {
-        margin-left: $gap;
-    }
+    height: $column-height;
+    margin-left: $gap;
     > * // thiết kế thẻ công việc
     {
         background-color: $mauthanhcongviec;
-        color: #333;
         padding: 0 8px;
     }
-    header //đầu của bảng công việc
+    header.column-drag-handle //đầu của bảng công việc
     {
         padding-left: 15px;
         height: $chieucao-header;
@@ -24,20 +20,31 @@
         font-weight: bold; 
         border-top-left-radius: $chieucao-border-radius;
         border-top-right-radius: $chieucao-border-radius;
+        cursor: pointer; //khi trỏ vào header hiện biểu tượng bàn tay
     }
-    footer //cuối của bảng công việc
+    footer //cuối của bảng công việc (Thêm công việc)
     {
         padding-left: 10px;
         height: $chieucao-footer;
         line-height: $chieucao-footer;
         border-bottom-left-radius: $chieucao-border-radius;
         border-bottom-right-radius: $chieucao-border-radius;
+        color: #888;
+        .footer-actions
+        {
+            margin-left: 5px;
+            cursor: pointer;
+            &:hover//trỏ vô footer hiện lên màu đen
+            {
+                color: $app-main-text-color;
+            }
+        }
     }
-    ul.Card-list
+    .Card-list
     {
-        list-style-type: none;
+       
         margin: 0;
-        max-height: calc(100% - #{$chieucao-header} - #{$chieucao-footer});
+        max-height: calc(#{$column-height} - #{$chieucao-header} - #{$chieucao-footer});
         overflow-y: auto;//tạo thanh cuộn dọc khi tạo nhiều công việc (x là ngang y là dọc)
         // thiết kế thanh kéo dọc của từng công việc 
         &::-webkit-scrollbar
@@ -53,6 +60,21 @@
         background-color: darken($mauthanhcongviec,15);
         border-right: 5px solid $mauthanhcongviec;
         }
-        
+        .card-ghost {
+            transition: transform 0.18s ease;
+            transform: rotateZ(5deg);
+            font-weight: bold;// Khi kéo
+          }
+          
+        .card-ghost-drop{
+            transition: transform 0.18s ease-in-out;
+            transform: rotateZ(0deg);
+            font-weight: bold;
+          }
+        .card-drop-preview {
+            background-color: rgba(150, 150, 200, 0.1);
+            border: 1px dashed #abc;
+            margin: 5px;
+          }
     }
 }

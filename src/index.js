@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import 'font-awesome/css/font-awesome.min.css';//import icon
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -1,15 +1,13 @@
 @import 'Gán Biến.scss';
 
-li.Card-item
+.Card-item
         {
             background-color: white;
             padding: $gap;
             border-radius: $card-border-radius;
             box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); //tạo bóng cho từng khung công việc
-            &:not(:last-child)
-            {
-                margin-bottom: $gap;
-            }
+            cursor: pointer;// tạo bàn tay cho từng công việc để kéo thả
+            margin-bottom: $gap; //khoản cách giữa từng công việc
         }
         img.card-cover
         {
