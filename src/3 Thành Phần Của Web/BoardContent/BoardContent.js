@@ -33,8 +33,8 @@ function BoardContent()
   useEffect(( ) => {
     if (newColumnInputRef && newColumnInputRef.current)
     {
-      newColumnInputRef.current.focus()
-      newColumnInputRef.current.select()
+      newColumnInputRef.current.focus()//trỏ thằng vào khi nhán thêm bảng công việc
+      newColumnInputRef.current.select()//bôi đen toàn bộ chữ trc đó khi nhấn icon xóa bật lại
     }
   }, [openNewColumnForm])
 
@@ -75,6 +75,7 @@ function BoardContent()
       newColumnInputRef.current.focus()
       return
     }
+
     //tạo thêm bảng khi thêm công việc vào csdl
     const newColumnToAdd= {
       id: Math.random().toString(36).substring(2, 5),
@@ -96,14 +97,37 @@ function BoardContent()
     toggleOpenNewColumnForm() //sau khi add thành công quay lại dongf thêm bảng công việc
   }
 
+  //Xóa sửa cột
+  const onUpdateColumn =(newColumntoUpdate) => {
+    const columnIdToUpdate = newColumntoUpdate.id
+
+    let newColumns = [...columns]
+    const columnIndexToUpdate = newColumns.findIndex(i => i.id === columnIdToUpdate)
+    if (newColumntoUpdate._destroy)
+    {
+      //xóa cột
+      newColumns.splice(columnIndexToUpdate, 1)
+    } else
+    {
+      // cập nhật lại bảng
+      newColumns.splice(columnIndexToUpdate, 1, newColumntoUpdate)
+    }
+    let newBoard ={ ... board }
+    //cập nhật lại columnOrder ả
+    newBoard.columnOrder= newColumns.map(c => c.id)
+    //cập nhật lại column
+    newBoard.columns= newColumns
+    setcolumns(newColumns)
+    setBoard(newBoard)
+  }
+
   return (
     <div className="board-content"> {/*các công việc*/}
       {/* Kéo thả cả bảng công việc */}
       <Container
         orientation="horizontal"
         onDrop={onColumnDrop}
-        getChildPayload={index => columns[index]
-        }
+        getChildPayload={index => columns[index] }
         dragHandleSelector=".column-drag-handle"
         dropPlaceholder={{
           animationDuration: 150,
@@ -113,7 +137,7 @@ function BoardContent()
       >
         { columns.map ((column, index) => (
           <Draggable key={index}>
-            <Column column= {column} onCardDrop={onCardDrop} />
+            <Column column= {column} onCardDrop={onCardDrop} onUpdateColumn = {onUpdateColumn}/>
           </Draggable>
         ) ) }
       </Container>

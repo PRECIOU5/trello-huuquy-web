@@ -13,7 +13,7 @@
     }
     header.column-drag-handle //đầu của bảng công việc
     {
-        padding-left: 15px;
+        padding: 1px 8px;
         height: $chieucao-header;
         line-height: $chieucao-header;
         font-size: 16px;
@@ -21,6 +21,56 @@
         border-top-left-radius: $chieucao-border-radius;
         border-top-right-radius: $chieucao-border-radius;
         cursor: pointer; //khi trỏ vào header hiện biểu tượng bàn tay
+        display: flex;
+        .column-title
+        {
+            flex: 90%;
+        }
+        .column-dropdown-actions
+        {
+            flex: 10%;
+            .dropdown
+            {
+                button.dropdown-btn //thiết kế lại nút ở card
+                {
+                    padding: 0 $gap;
+                    font-size: 16px;
+                    height: 32px;
+                    margin-top: -7px;
+                    font-weight: bold;
+                    letter-spacing: 1px;
+                    background-color: $mauthanhcongviec;
+                    border-color: $mauthanhcongviec;
+                    color: $app-main-text-color;
+                    &::after
+                    {
+                        content:'...';
+                        border: none;
+                        vertical-align: 1.255em;
+                    }
+                    &:hover
+                    {
+                        background-color: darken($mauthanhcongviec, 10);
+                        border-color: darken($mauthanhcongviec, 10);
+                    }
+                }
+            }
+           
+            .dropdown-menu
+            {
+                padding: 0;
+                min-width: 200px;
+                a.dropdown-item
+                {
+                    padding: 0.1rem 1rem;
+                    font-size: 14px;
+                    &:not(:last-child)
+                    {
+                        border-bottom: 1px solid  darken($mauthanhcongviec, 10);
+                    }
+                }
+            }
+        }
     }
     footer //cuối của bảng công việc (Thêm công việc)
     {
