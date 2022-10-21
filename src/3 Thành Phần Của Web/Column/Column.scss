@@ -76,6 +76,7 @@
     {
         padding-left: 10px;
         height: $chieucao-footer;
+        min-height: $gap;
         line-height: $chieucao-footer;
         border-bottom-left-radius: $chieucao-border-radius;
         border-bottom-right-radius: $chieucao-border-radius;
@@ -126,5 +127,13 @@
             border: 1px dashed #abc;
             margin: 5px;
           }
+        .add-new-card
+        {
+            .textarea-enter-new-card
+            {
+                min-height: 54px;
+                max-height: 162px;
+            }
+        }
     }
 }

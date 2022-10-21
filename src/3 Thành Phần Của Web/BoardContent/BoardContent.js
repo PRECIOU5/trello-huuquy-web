@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
-import { isEmpty } from 'lodash' // thư viện lodash npm: https://www.npmjs.com/package/lodash
+import { clone, cloneDeep, isEmpty } from 'lodash' // thư viện lodash npm: https://www.npmjs.com/package/lodash
 import { Container as BootstrapContainer, Row, Col, Form, Button } from 'react-bootstrap'// add thư viện boottrap
 import './BoardContent.scss'
 import Column from '3 Thành Phần Của Web/Column/Column'
@@ -12,36 +12,11 @@ function BoardContent()
 {
   const [board, setBoard] =useState({}) //react hook
   const [columns, setcolumns] =useState([])
-  const [openNewColumnForm, setOpenNewColumnForm]= useState(false)
   const newColumnInputRef = useRef(null)
   const [newColumnTitle, setnewColumnTitle] = useState('')
-  const onNewColumnTileChange = useCallback( (e) => setnewColumnTitle (e.target.value), [])
-
-
-  // sử dụng cơ sở dữ liệu gọi bản công việc
-  useEffect(( ) => {
-    const boardFromDB = initialData.boards.find(board => board.id === 'board-1')
-    if (boardFromDB)
-    {
-      setBoard(boardFromDB)
-      //sắp xếp column từ database bằng sorts (gọi mapOrder)
-      setcolumns(mapOrder( boardFromDB.columns, boardFromDB.columnOrder, 'id'))
-    }
-  }, [])
-
-  //thiết kế khi nhấn vào nút thêm bảng công việc nó trỏ thằng vào bảng nhập công việc
-  useEffect(( ) => {
-    if (newColumnInputRef && newColumnInputRef.current)
-    {
-      newColumnInputRef.current.focus()//trỏ thằng vào khi nhán thêm bảng công việc
-      newColumnInputRef.current.select()//bôi đen toàn bộ chữ trc đó khi nhấn icon xóa bật lại
-    }
-  }, [openNewColumnForm])
-
-  if (isEmpty(board))
-  {
-    return <div className="not-found" style={{ 'padding':'10px', 'color':'white' }}>board not found</div>
-  }
+  const onNewColumnTileChange = (e) => setnewColumnTitle (e.target.value)
+  const [openNewColumnForm, setOpenNewColumnForm]= useState(false)
+  const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
   const onColumnDrop = (dropResult) =>
   {
@@ -68,7 +43,6 @@ function BoardContent()
     }
   }
 
-  const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
   const addNewColumn = () => {
     if (! newColumnTitle)
     {
@@ -110,6 +84,7 @@ function BoardContent()
     } else
     {
       // cập nhật lại bảng
+      console.log(newColumntoUpdate)
       newColumns.splice(columnIndexToUpdate, 1, newColumntoUpdate)
     }
     let newBoard ={ ... board }
@@ -119,6 +94,31 @@ function BoardContent()
     newBoard.columns= newColumns
     setcolumns(newColumns)
     setBoard(newBoard)
+  }
+
+  // sử dụng cơ sở dữ liệu gọi bản công việc
+  useEffect(( ) => {
+    const boardFromDB = initialData.boards.find(board => board.id === 'board-1')
+    if (boardFromDB)
+    {
+      setBoard(boardFromDB)
+      //sắp xếp column từ database bằng sorts (gọi mapOrder)
+      setcolumns(mapOrder( boardFromDB.columns, boardFromDB.columnOrder, 'id'))
+    }
+  }, [])
+
+  //thiết kế khi nhấn vào nút thêm bảng công việc nó trỏ thằng vào bảng nhập công việc
+  useEffect(( ) => {
+    if (newColumnInputRef && newColumnInputRef.current)
+    {
+      newColumnInputRef.current.focus()//trỏ thằng vào khi nhán thêm bảng công việc
+      newColumnInputRef.current.select()//bôi đen toàn bộ chữ trc đó khi nhấn icon xóa bật lại
+    }
+  }, [openNewColumnForm])
+
+  if (isEmpty(board))
+  {
+    return <div className="not-found" style={{ 'padding':'10px', 'color':'white' }}>board not found</div>
   }
 
   return (
@@ -137,7 +137,10 @@ function BoardContent()
       >
         { columns.map ((column, index) => (
           <Draggable key={index}>
-            <Column column= {column} onCardDrop={onCardDrop} onUpdateColumn = {onUpdateColumn}/>
+            <Column column= {column}
+            onCardDrop={onCardDrop}
+            onUpdateColumn = {onUpdateColumn}
+            />
           </Draggable>
         ) ) }
       </Container>
@@ -157,15 +160,15 @@ function BoardContent()
               <Form.Control
                 size='sm'
                 type="text"
-                placeholder="Nhập thêm công việc "
+                placeholder="Nhập tên bảng công việc "
                 className="input-enter-new-column"
                 ref={newColumnInputRef}
                 value= {newColumnTitle}
                 onChange = {onNewColumnTileChange}
                 onKeyDown= {event => (event.key === 'Enter') && addNewColumn() } //sự kiện nhấn enter để thêm công việc
               />
-              <Button variant="success" size="sm" onClick={addNewColumn}>Thêm</Button>
-              <span className="cancel-new-column" onClick={toggleOpenNewColumnForm}> <i className='fa fa-trash icon'></i> </span>
+              <Button variant="success" size="sm" onClick={addNewColumn}>Thêm Bảng</Button>
+              <span className="cancel-icon" onClick={toggleOpenNewColumnForm}> <i className='fa fa-trash icon'></i> </span>
             </Col>
           </Row>
         }

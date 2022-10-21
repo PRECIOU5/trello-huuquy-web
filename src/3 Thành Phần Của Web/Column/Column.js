@@ -1,26 +1,28 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
-import { Dropdown, Form } from 'react-bootstrap'
+import { Dropdown, Form, Button } from 'react-bootstrap'
 import './Column.scss'
 import { mapOrder } from 'Chức năng/Sắp xếp'
 import Card from '3 Thành Phần Của Web/Card/Card'
 import ConfirmModal from '3 Thành Phần Của Web/Bảng Thông Báo/ConfirmModal'
 import { MODAL_ACTION_CONFIRM } from 'Chức năng/Gán tên'
 import { saveContentAfterPressEnter, selectAllInLineText } from 'Chức năng/contentEditable'
+import {cloneDeep} from 'lodash'
 //import { type } from '@testing-library/user-event/dist/type'
 
 function Column(props)
 {
-  const { column, onCardDrop, onUpdateColumn } = props
+  const { column, onCardDrop, onUpdateColumn, } = props
   const cards = mapOrder(column.cards, column.cardOrder, 'id')
   const [showConfirmModal, setshowConfirmModal] = useState(false)
   const ToggleshowConfirmModal = () => setshowConfirmModal(!showConfirmModal)
   const [columnTitle, setColumnTitle]= useState('')
-  const handleColumnTitleChange = useCallback( (e) => setColumnTitle(e.target.value), [] )
-
-  useEffect ( () => {
-    setColumnTitle(column.title)
-  }, [column.title])
+  const handleColumnTitleChange =(e) => setColumnTitle(e.target.value)
+  const [openNewCardForm, setOpenNewCardForm]= useState(false)
+  const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm)
+  const newCardTextareaRef = useRef(null)
+  const [newCardTitle, setnewCardTitle] = useState('')
+  const onNewCardTileChange = (e) => setnewCardTitle (e.target.value)
 
   const onConfirmModalAction = (type) => {
     if (type === 'MODAL_ACTION_CONFIRM')
@@ -41,6 +43,41 @@ function Column(props)
       title: columnTitle
     }
     onUpdateColumn(newColumn)
+  }
+
+  useEffect ( () => {
+    setColumnTitle(column.title)
+  }, [column.title])
+
+  useEffect(( ) => {
+    if (newCardTextareaRef && newCardTextareaRef.current)
+    {
+      newCardTextareaRef.current.focus()//trỏ thằng vào khi nhán thêm bảng công việc
+      newCardTextareaRef.current.select()//bôi đen toàn bộ chữ trc đó khi nhấn icon xóa bật lại
+    }
+  }, [openNewCardForm])
+
+  const addNewCard=() => {
+    if (! newCardTitle)
+    {
+      newCardTextareaRef.current.focus()
+      return
+    }
+    const newCardToAdd= {
+      id: Math.random().toString(36).substring(2, 5),
+      boardid: column.boardID,
+      columnId: column.id,
+      title: newCardTitle.trim(),
+      cover:null
+    }
+   let newColumn = cloneDeep(column)
+   newColumn.cards.push(newCardToAdd)
+   newColumn.cardOrder.push(newCardToAdd.id)
+   //cập nhật dữ liệu
+   onUpdateColumn(newColumn)
+   //thêm công việc hiển thị lên bảng c
+   setnewCardTitle('')
+   toggleOpenNewCardForm()
   }
 
   return (
@@ -99,10 +136,34 @@ function Column(props)
             )
           ) }
         </Container>
+        {/* Thêm công việc mới */}
+        {openNewCardForm &&
+         <div className='add-new-card'>
+           <Form.Control
+             size='sm'
+             as="textarea"
+             rows="3"
+             placeholder="Nhập thêm công việc "
+             className="textarea-enter-new-card"
+             ref={newCardTextareaRef}
+             value= {newCardTitle}
+             onChange = {onNewCardTileChange}
+             onKeyDown= {event => (event.key === 'Enter') && addNewCard() } //sự kiện nhấn enter để thêm công việc
+           />
+         </div>
+        }
       </div>
 
       <footer>
-        <div className='footer-actions'> <i className="fa fa-plus icon"></i> Thêm công việc mới </div>
+        {openNewCardForm &&
+         <div className='add-new-card-actions'>
+           <Button variant="success" size="sm" onClick={addNewCard}>Thêm công việc</Button>
+           <span className="cancel-icon" onClick={toggleOpenNewCardForm} > <i className='fa fa-trash icon'></i> </span>
+         </div>
+        }
+        {!openNewCardForm &&
+         <div className='footer-actions' onClick={toggleOpenNewCardForm}> <i className="fa fa-plus icon"></i> Thêm công việc mới </div>
+        }
       </footer>
 
       {/* thiết kế ẩn hiện thanh thông báo */}
