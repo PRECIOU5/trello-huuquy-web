@@ -52,12 +52,17 @@
         width: 250px;
         max-width: 250px;
         background-color: $mauthanhcongviec;
+        line-height: 32px;
         padding: 4px 10px;
         margin-left: $gap;
         border-radius: $chieucao-border-radius;
         input.input-enter-new-column
         {
             margin: 5px 0;
+            &:focus
+            {
+                border-color: $input-border-color;
+            }
         }
         span.cancel-new-column
         {
