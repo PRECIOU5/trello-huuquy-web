@@ -59,24 +59,6 @@
         input.input-enter-new-column
         {
             margin: 5px 0;
-            &:focus
-            {
-                border-color: $input-border-color;
-            }
-        }
-        span.cancel-new-column
-        {
-            margin-left: $gap;
-            cursor: pointer;
-            i
-            {
-                font-size: 18px;
-                color: $Mau-danger;
-                &:hover
-                {
-                    color: darken($Mau-danger,  10); //trỏ vào thùng rác đậm hơn
-                }
-            }
         }
     }
     
