@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
-import { clone, cloneDeep, isEmpty } from 'lodash' // thư viện lodash npm: https://www.npmjs.com/package/lodash
+import { isEmpty } from 'lodash' // thư viện lodash npm: https://www.npmjs.com/package/lodash
 import { Container as BootstrapContainer, Row, Col, Form, Button } from 'react-bootstrap'// add thư viện boottrap
 import './BoardContent.scss'
 import Column from '3 Thành Phần Của Web/Column/Column'
 import { mapOrder } from 'Chức năng/Sắp xếp' // gọi thư viện sắp xếp
 import { applyDrag } from 'Chức năng/dragDrop'
-import { initialData } from 'Action/initialData'//gọi thư viện database
+// import { initialData } from 'Action/initialData'//gọi thư viện database
+import { fetchBoardDetails } from 'Action/ApiCall'
 
 function BoardContent()
 {
@@ -24,7 +25,7 @@ function BoardContent()
     newColumns = applyDrag(newColumns, dropResult)
     let newBoard ={ ... board }
     //cập nhật lại columnOrder khi kéo thả
-    newBoard.columnOrder= newColumns.map(c => c.id)
+    newBoard.columnOrder= newColumns.map(c => c._id)
     //cập nhật lại column khi kéo thả
     newBoard.columns= newColumns
     setcolumns(newColumns)
@@ -35,9 +36,9 @@ function BoardContent()
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null)
     {
       let newColumns = [...columns]
-      let currentColumn = newColumns.find(c => c.id === columnId)
+      let currentColumn = newColumns.find(c => c._id === columnId)
       currentColumn.cards = applyDrag(currentColumn.cards, dropResult) // sử lý card giống column (cập nhật dữ liệu)
-      currentColumn.cardOrder = currentColumn.cards.map(i => i.id)
+      currentColumn.cardOrder = currentColumn.cards.map(i => i._id)
       setcolumns(newColumns)
       //console.log(dropResult) //hiện kết quả khi kéo thả
     }
@@ -53,7 +54,7 @@ function BoardContent()
     //tạo thêm bảng khi thêm công việc vào csdl
     const newColumnToAdd= {
       id: Math.random().toString(36).substring(2, 5),
-      boardid: board.id,
+      boardID: board._id,
       title: newColumnTitle.trim(),
       cardOrder: [],
       cards: []
@@ -62,7 +63,7 @@ function BoardContent()
     newColumns.push(newColumnToAdd)
     let newBoard ={ ... board }
     //cập nhật lại columnOrder ả
-    newBoard.columnOrder= newColumns.map(c => c.id)
+    newBoard.columnOrder= newColumns.map(c => c._id)
     //cập nhật lại column
     newBoard.columns= newColumns
     setcolumns(newColumns)
@@ -73,10 +74,10 @@ function BoardContent()
 
   //Xóa sửa cột
   const onUpdateColumn =(newColumntoUpdate) => {
-    const columnIdToUpdate = newColumntoUpdate.id
+    const columnIdToUpdate = newColumntoUpdate._id
 
     let newColumns = [...columns]
-    const columnIndexToUpdate = newColumns.findIndex(i => i.id === columnIdToUpdate)
+    const columnIndexToUpdate = newColumns.findIndex(i => i._id === columnIdToUpdate)
     if (newColumntoUpdate._destroy)
     {
       //xóa cột
@@ -84,12 +85,11 @@ function BoardContent()
     } else
     {
       // cập nhật lại bảng
-      console.log(newColumntoUpdate)
       newColumns.splice(columnIndexToUpdate, 1, newColumntoUpdate)
     }
     let newBoard ={ ... board }
     //cập nhật lại columnOrder ả
-    newBoard.columnOrder= newColumns.map(c => c.id)
+    newBoard.columnOrder= newColumns.map(c => c._id)
     //cập nhật lại column
     newBoard.columns= newColumns
     setcolumns(newColumns)
@@ -98,13 +98,14 @@ function BoardContent()
 
   // sử dụng cơ sở dữ liệu gọi bản công việc
   useEffect(( ) => {
-    const boardFromDB = initialData.boards.find(board => board.id === 'board-1')
-    if (boardFromDB)
-    {
-      setBoard(boardFromDB)
+    // const boardFromDB = initialData.boards.find(board => board.id === 'board-1')
+    const boardID ='635f874e5f3da3576b2d6152'
+    fetchBoardDetails(boardID).then(board => {
+      setBoard(board)
       //sắp xếp column từ database bằng sorts (gọi mapOrder)
-      setcolumns(mapOrder( boardFromDB.columns, boardFromDB.columnOrder, 'id'))
-    }
+      setcolumns(mapOrder( board.columns, board.columnOrder, '_id'))
+    })
+
   }, [])
 
   //thiết kế khi nhấn vào nút thêm bảng công việc nó trỏ thằng vào bảng nhập công việc
@@ -138,8 +139,8 @@ function BoardContent()
         { columns.map ((column, index) => (
           <Draggable key={index}>
             <Column column= {column}
-            onCardDrop={onCardDrop}
-            onUpdateColumn = {onUpdateColumn}
+              onCardDrop={onCardDrop}
+              onUpdateColumn = {onUpdateColumn}
             />
           </Draggable>
         ) ) }
