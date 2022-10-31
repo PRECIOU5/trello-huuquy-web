@@ -7,13 +7,13 @@ import Card from '3 Thành Phần Của Web/Card/Card'
 import ConfirmModal from '3 Thành Phần Của Web/Bảng Thông Báo/ConfirmModal'
 import { MODAL_ACTION_CONFIRM } from 'Chức năng/Gán tên'
 import { saveContentAfterPressEnter, selectAllInLineText } from 'Chức năng/contentEditable'
-import {cloneDeep} from 'lodash'
+import { cloneDeep } from 'lodash'
 //import { type } from '@testing-library/user-event/dist/type'
 
 function Column(props)
 {
-  const { column, onCardDrop, onUpdateColumn, } = props
-  const cards = mapOrder(column.cards, column.cardOrder, 'id')
+  const { column, onCardDrop, onUpdateColumn } = props
+  const cards = mapOrder(column.cards, column.cardOrder, '_id')
   const [showConfirmModal, setshowConfirmModal] = useState(false)
   const ToggleshowConfirmModal = () => setshowConfirmModal(!showConfirmModal)
   const [columnTitle, setColumnTitle]= useState('')
@@ -65,19 +65,19 @@ function Column(props)
     }
     const newCardToAdd= {
       id: Math.random().toString(36).substring(2, 5),
-      boardid: column.boardID,
-      columnId: column.id,
+      boardID: column.boardID,
+      columnId: column._id,
       title: newCardTitle.trim(),
       cover:null
     }
-   let newColumn = cloneDeep(column)
-   newColumn.cards.push(newCardToAdd)
-   newColumn.cardOrder.push(newCardToAdd.id)
-   //cập nhật dữ liệu
-   onUpdateColumn(newColumn)
-   //thêm công việc hiển thị lên bảng c
-   setnewCardTitle('')
-   toggleOpenNewCardForm()
+    let newColumn = cloneDeep(column)
+    newColumn.cards.push(newCardToAdd)
+    newColumn.cardOrder.push(newCardToAdd._id)
+    //cập nhật dữ liệu
+    onUpdateColumn(newColumn)
+    //thêm công việc hiển thị lên bảng c
+    setnewCardTitle('')
+    toggleOpenNewCardForm()
   }
 
   return (
@@ -103,7 +103,7 @@ function Column(props)
           <Dropdown>
             <Dropdown.Toggle id="dropdown-basic" size='sm' className='dropdown-btn'/>
             <Dropdown.Menu>
-              <Dropdown.Item >Thêm công việc mới</Dropdown.Item>
+              <Dropdown.Item onClick={toggleOpenNewCardForm}>Thêm công việc mới</Dropdown.Item>
               <Dropdown.Item onClick={ToggleshowConfirmModal} > Xóa thẻ </Dropdown.Item>
               <Dropdown.Item >Xóa tất cả công việc</Dropdown.Item>
               <Dropdown.Item >Xóa tất cả công việc</Dropdown.Item>
@@ -117,7 +117,7 @@ function Column(props)
         <Container
           groupName="col"
           orientation="vertical"
-          onDrop={dropResult => onCardDrop(column.id, dropResult)}
+          onDrop={dropResult => onCardDrop(column._id, dropResult)}
           getChildPayload={index => cards[index]}
           dragClass="card-ghost"
           dropClass="card-ghost-drop"
