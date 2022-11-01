@@ -5,9 +5,10 @@ import './Column.scss'
 import { mapOrder } from 'Chức năng/Sắp xếp'
 import Card from '3 Thành Phần Của Web/Card/Card'
 import ConfirmModal from '3 Thành Phần Của Web/Bảng Thông Báo/ConfirmModal'
-import { MODAL_ACTION_CONFIRM } from 'Chức năng/Gán tên'
+//import { MODAL_ACTION_CONFIRM } from 'Chức năng/Gán tên'
 import { saveContentAfterPressEnter, selectAllInLineText } from 'Chức năng/contentEditable'
 import { cloneDeep } from 'lodash'
+import { createNewCard, updateColumn } from 'Action/ApiCall'
 //import { type } from '@testing-library/user-event/dist/type'
 
 function Column(props)
@@ -24,6 +25,31 @@ function Column(props)
   const [newCardTitle, setnewCardTitle] = useState('')
   const onNewCardTileChange = (e) => setnewCardTitle (e.target.value)
 
+  const addNewCard=() => {
+    if (! newCardTitle)
+    {
+      newCardTextareaRef.current.focus()
+      return
+    }
+    const newCardToAdd= {
+      boardID: column.boardID,
+      columnID: column._id,
+      title: newCardTitle.trim()
+      //cover: []
+    }
+    //api
+    createNewCard(newCardToAdd).then(card => {
+      let newColumn = cloneDeep(column)
+      newColumn.cards.push(card)
+      newColumn.cardOrder.push(card._id)
+      //cập nhật dữ liệu
+      onUpdateColumn(newColumn)
+      //thêm công việc hiển thị lên bảng c
+      setnewCardTitle('')
+      toggleOpenNewCardForm()
+    })
+  }
+  // xóa cột
   const onConfirmModalAction = (type) => {
     if (type === 'MODAL_ACTION_CONFIRM')
     {
@@ -32,17 +58,26 @@ function Column(props)
         ...column,
         _destroy: true
       }
-      onUpdateColumn(newColumn)
+      //call API
+      updateColumn(newColumn._id, newColumn).then(updatedColumn => {
+        onUpdateColumn(updatedColumn)
+      })
     }
     ToggleshowConfirmModal()//khi Nhấn đóng nó ẩn thanh thông báo xóa
   }
-
+  // update column
   const handleColumnTitleBlur = () => {
-    const newColumn ={
-      ...column,
-      title: columnTitle
+    if (columnTitle !== column.title) {
+      const newColumn ={
+        ...column,
+        title: columnTitle
+      }
+      //call API
+      updateColumn(newColumn._id, newColumn).then(updatedColumn => {
+        updatedColumn.cards = newColumn.cards
+        onUpdateColumn(updatedColumn)
+      })
     }
-    onUpdateColumn(newColumn)
   }
 
   useEffect ( () => {
@@ -57,28 +92,6 @@ function Column(props)
     }
   }, [openNewCardForm])
 
-  const addNewCard=() => {
-    if (! newCardTitle)
-    {
-      newCardTextareaRef.current.focus()
-      return
-    }
-    const newCardToAdd= {
-      id: Math.random().toString(36).substring(2, 5),
-      boardID: column.boardID,
-      columnId: column._id,
-      title: newCardTitle.trim(),
-      cover:null
-    }
-    let newColumn = cloneDeep(column)
-    newColumn.cards.push(newCardToAdd)
-    newColumn.cardOrder.push(newCardToAdd._id)
-    //cập nhật dữ liệu
-    onUpdateColumn(newColumn)
-    //thêm công việc hiển thị lên bảng c
-    setnewCardTitle('')
-    toggleOpenNewCardForm()
-  }
 
   return (
     <div className="column"> {/*cột công việc*/}

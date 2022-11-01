@@ -7,7 +7,7 @@ import Column from '3 Thành Phần Của Web/Column/Column'
 import { mapOrder } from 'Chức năng/Sắp xếp' // gọi thư viện sắp xếp
 import { applyDrag } from 'Chức năng/dragDrop'
 // import { initialData } from 'Action/initialData'//gọi thư viện database
-import { fetchBoardDetails } from 'Action/ApiCall'
+import { fetchBoardDetails, createNewColumn } from 'Action/ApiCall'
 
 function BoardContent()
 {
@@ -50,26 +50,27 @@ function BoardContent()
       newColumnInputRef.current.focus()
       return
     }
-
     //tạo thêm bảng khi thêm công việc vào csdl
     const newColumnToAdd= {
-      id: Math.random().toString(36).substring(2, 5),
       boardID: board._id,
-      title: newColumnTitle.trim(),
-      cardOrder: [],
-      cards: []
+      title: newColumnTitle.trim()
     }
-    let newColumns = [...columns]
-    newColumns.push(newColumnToAdd)
-    let newBoard ={ ... board }
-    //cập nhật lại columnOrder ả
-    newBoard.columnOrder= newColumns.map(c => c._id)
-    //cập nhật lại column
-    newBoard.columns= newColumns
-    setcolumns(newColumns)
-    setBoard(newBoard)
-    setnewColumnTitle('')
-    toggleOpenNewColumnForm() //sau khi add thành công quay lại dongf thêm bảng công việc
+    createNewColumn(newColumnToAdd).then(column => {
+      let newColumns = [...columns]
+      newColumns.push(column)
+
+      let newBoard ={ ... board }
+      //cập nhật lại columnOrder ả
+      newBoard.columnOrder= newColumns.map(c => c._id)
+      //cập nhật lại column
+      newBoard.columns= newColumns
+
+      setcolumns(newColumns)
+      setBoard(newBoard)
+      setnewColumnTitle('')
+      toggleOpenNewColumnForm() //sau khi add thành công quay lại dongf thêm bảng công việc
+    })
+
   }
 
   //Xóa sửa cột
@@ -98,7 +99,7 @@ function BoardContent()
 
   // sử dụng cơ sở dữ liệu gọi bản công việc
   useEffect(( ) => {
-    // const boardFromDB = initialData.boards.find(board => board.id === 'board-1')
+    // const boardFromDB = initialData.boards.find(boa  rd => board.id === 'board-1')
     const boardID ='635f874e5f3da3576b2d6152'
     fetchBoardDetails(boardID).then(board => {
       setBoard(board)
