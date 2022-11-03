@@ -5,7 +5,7 @@ import './Column.scss'
 import { mapOrder } from 'Chức năng/Sắp xếp'
 import Card from '3 Thành Phần Của Web/Card/Card'
 import ConfirmModal from '3 Thành Phần Của Web/Bảng Thông Báo/ConfirmModal'
-//import { MODAL_ACTION_CONFIRM } from 'Chức năng/Gán tên'
+import { MODAL_ACTION_CONFIRM } from 'Chức năng/Gán tên'
 import { saveContentAfterPressEnter, selectAllInLineText } from 'Chức năng/contentEditable'
 import { cloneDeep } from 'lodash'
 import { createNewCard, updateColumn } from 'Action/ApiCall'
@@ -51,7 +51,7 @@ function Column(props)
   }
   // xóa cột
   const onConfirmModalAction = (type) => {
-    if (type === 'MODAL_ACTION_CONFIRM')
+    if (type === MODAL_ACTION_CONFIRM)
     {
       //xóa các công việc
       const newColumn ={
