@@ -19,9 +19,9 @@ function BoardBar()
 
               <div className='item member-avatar'>
                 <img src='https://scontent.fsgn5-9.fna.fbcdn.net/v/t1.15752-9/95772708_700541884110713_5499129126247727104_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=ae9488&_nc_ohc=YHQuR6EWqeoAX-yZqJ0&_nc_ht=scontent.fsgn5-9.fna&oh=03_AdQuV5PbwHfK3aM83M6cCXSpUqWqHvtVkvje--wpaafniA&oe=638DFD90' alt='avatar-huuquy' title='HuuQuy'/>
-                <img src='https://scontent.fsgn5-9.fna.fbcdn.net/v/t1.15752-9/95772708_700541884110713_5499129126247727104_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=ae9488&_nc_ohc=YHQuR6EWqeoAX-yZqJ0&_nc_ht=scontent.fsgn5-9.fna&oh=03_AdQuV5PbwHfK3aM83M6cCXSpUqWqHvtVkvje--wpaafniA&oe=638DFD90' alt='avatar-huuquy' title='HuuQuy'/>
-                <img src='https://scontent.fsgn5-9.fna.fbcdn.net/v/t1.15752-9/95772708_700541884110713_5499129126247727104_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=ae9488&_nc_ohc=YHQuR6EWqeoAX-yZqJ0&_nc_ht=scontent.fsgn5-9.fna&oh=03_AdQuV5PbwHfK3aM83M6cCXSpUqWqHvtVkvje--wpaafniA&oe=638DFD90' alt='avatar-huuquy' title='HuuQuy'/>
-                <span className='more-member'>+7</span>
+                {/* <img src='https://scontent.fsgn5-9.fna.fbcdn.net/v/t1.15752-9/95772708_700541884110713_5499129126247727104_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=ae9488&_nc_ohc=YHQuR6EWqeoAX-yZqJ0&_nc_ht=scontent.fsgn5-9.fna&oh=03_AdQuV5PbwHfK3aM83M6cCXSpUqWqHvtVkvje--wpaafniA&oe=638DFD90' alt='avatar-huuquy' title='HuuQuy'/> */}
+                {/* <img src='https://scontent.fsgn5-9.fna.fbcdn.net/v/t1.15752-9/95772708_700541884110713_5499129126247727104_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=ae9488&_nc_ohc=YHQuR6EWqeoAX-yZqJ0&_nc_ht=scontent.fsgn5-9.fna&oh=03_AdQuV5PbwHfK3aM83M6cCXSpUqWqHvtVkvje--wpaafniA&oe=638DFD90' alt='avatar-huuquy' title='HuuQuy'/> */}
+                <span className='more-member'>+</span>
                 <span className='invite'>Invite</span>
               </div>
             </div>
