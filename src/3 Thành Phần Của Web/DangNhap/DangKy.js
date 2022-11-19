@@ -1,41 +1,50 @@
-import { dangNhap, getMe } from "Action/ApiCall/user-api";
+import { dangKy } from "Action/ApiCall/user-api";
 import { useState } from "react";
 import "./Form.css";
 
-function DangNhap(props) {
+function DangKy(props) {
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = await dangNhap({ email, password });
-      alert("Đăng nhập thành công!");
-      localStorage.setItem("jwt-token", token);
-      const me = await getMe();
-      localStorage.setItem("me", JSON.stringify(me));
+      const response = await dangKy({ fullName, email, password });
+      alert("Đăng ký thành công!");
+      setFullName("");
       setEmail("");
       setPassword("");
-      window.location.href = "/" + me.boardOwner;
     } catch (e) {
       alert(e.response.data);
     }
   };
+
   return (
     <>
       <div className="Form">
         <div className="contain-form">
-          <h2 style={{ textAlign: "center" }}>Đăng nhập</h2>
+          <h2 style={{ textAlign: "center" }}>Đăng ký</h2>
           <div className="login-form">
             <form action="" onSubmit={onSubmit}>
+              <div className="form-group">
+                <label htmlFor="fName">Họ tên</label>
+                <input
+                  type="text"
+                  id="fName"
+                  value={fullName}
+                  required
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+              </div>
               <div className="form-group">
                 <label htmlFor="un">Email</label>
                 <input
                   type="email"
                   id="un"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                   required
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="form-group">
@@ -43,15 +52,19 @@ function DangNhap(props) {
                 <input
                   type="password"
                   id="pw"
+                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
                 />
               </div>
+              <div className="form-group">
+                <label htmlFor="repw">Nhập lại mật khẩu</label>
+                <input type="password" id="repw" />
+              </div>
               <button type="submit" className="btn-form">
-                Đăng nhập
+                Đăng Ký
               </button>
-              <a href="/dang-ky">Chưa có tài khoản?</a>
+              <a href="/">Đăng nhập</a>
             </form>
           </div>
         </div>
@@ -60,4 +73,4 @@ function DangNhap(props) {
   );
 }
 
-export default DangNhap;
+export default DangKy;
