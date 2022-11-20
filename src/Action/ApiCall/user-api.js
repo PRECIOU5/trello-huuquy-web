@@ -33,3 +33,11 @@ export const invite = async (id, data) => {
   );
   return response.data;
 };
+
+export const addBoard = async (id, data) => {
+  const response = await axios.post(
+    API_URL + USERS_ENDPOINT + "/add-board/" + id,
+    data
+  );
+  return response.data;
+};
