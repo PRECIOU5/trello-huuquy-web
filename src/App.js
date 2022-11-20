@@ -8,8 +8,17 @@ import BoardContent from "3 Thành Phần Của Web/BoardContent/BoardContent";
 import { Route, Routes } from "react-router-dom";
 import DangNhap from "3 Thành Phần Của Web/DangNhap/DangNhap";
 import DangKy from "3 Thành Phần Của Web/DangNhap/DangKy";
+import { useEffect } from "react";
+import { getMe } from "Action/ApiCall/user-api";
 
 function App() {
+  useEffect(() => {
+    const init = async () => {
+      const me = await getMe();
+      localStorage.setItem("me", JSON.stringify(me));
+    };
+    init();
+  }, []);
   return (
     <Routes>
       <Route

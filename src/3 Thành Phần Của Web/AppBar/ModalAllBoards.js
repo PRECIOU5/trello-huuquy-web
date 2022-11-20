@@ -1,12 +1,15 @@
+import { addBoard } from "Action/ApiCall/user-api";
 import { useEffect } from "react";
 import { useState } from "react";
 import "./ModalAllBoards.css";
 
 function ModalAllBoards(props) {
   const [boards, setBoards] = useState([]);
+  const [isAdd, setIsAdd] = useState(false);
+  const [title, setTitle] = useState("");
+  const me = JSON.parse(localStorage.getItem("me"));
 
   useEffect(() => {
-    const me = JSON.parse(localStorage.getItem("me"));
     setBoards([{ _id: me.boardOwner, title: "My Board" }, ...me.boards]);
   }, []);
 
@@ -14,10 +17,52 @@ function ModalAllBoards(props) {
     props.setClose(<></>);
   };
 
+  const handleAddBoard = async (e) => {
+    e.preventDefault();
+    const response = await addBoard(me._id, { title });
+    console.log(response);
+    setBoards([...boards, response]);
+    setTitle("");
+  };
+
   return (
     <div className="Modal">
       <div className="ModalAllBoards Modal-content">
         <h4 style={{ textAlign: "center" }}>Tất cả boards</h4>
+        <div style={{ textAlign: "end", margin: "10px 0px" }}>
+          <button className="btn btn-success" onClick={() => setIsAdd(true)}>
+            Thêm board
+          </button>
+        </div>
+
+        {isAdd && (
+          <div style={{ margin: "10px 0px" }}>
+            <form action="" onSubmit={handleAddBoard}>
+              <div className="form-group">
+                <label htmlFor="name">Tên board</label>
+                <input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  type="text"
+                  required
+                  id="name"
+                />
+              </div>
+              <button type="submit" className="btn btn-success">
+                Thêm
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                style={{ marginLeft: "5px" }}
+                onClick={() => setIsAdd(false)}
+              >
+                Hủy
+              </button>
+            </form>
+          </div>
+        )}
+
         <div className="contain-boards">
           {boards.map((b) => (
             <div
