@@ -1,0 +1,11 @@
+var apiObj = null;
+function StartMeeting() {
+  const domain = "40.76.47.33";
+  const options = {
+    roomName: "huuquy21",
+    with: 700,
+    height: 700,
+    parentNode: document.querySelector("#jitsi-meet-conf-container"),
+  };
+  apiObj = new jitsiMeetExternalAPI(domain, options);
+}
