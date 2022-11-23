@@ -28,10 +28,10 @@ function ModalAllBoards(props) {
   return (
     <div className="Modal">
       <div className="ModalAllBoards Modal-content">
-        <h4 style={{ textAlign: "center" }}>Tất cả boards</h4>
+        <h4 style={{ textAlign: "center" }}>TẤT CẢ BẢNG LÀM VIỆC</h4>
         <div style={{ textAlign: "end", margin: "10px 0px" }}>
           <button className="btn btn-success" onClick={() => setIsAdd(true)}>
-            Thêm board
+            Thêm bảng làm việc
           </button>
         </div>
 
@@ -39,7 +39,7 @@ function ModalAllBoards(props) {
           <div style={{ margin: "10px 0px" }}>
             <form action="" onSubmit={handleAddBoard}>
               <div className="form-group">
-                <label htmlFor="name">Tên board</label>
+                <label htmlFor="name">Tên bảng làm việc</label>
                 <input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}

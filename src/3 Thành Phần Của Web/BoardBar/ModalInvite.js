@@ -26,7 +26,7 @@ function ModalInvite(props) {
   return (
     <div className="Modal">
       <div className="Modal-content">
-        <h4 style={{ textAlign: "center" }}>Mời bạn bè</h4>
+        <h4 style={{ textAlign: "center" }}>Mời người dùng</h4>
 
         <form action="" onSubmit={handleOnInvite}>
           <div className="form-group">

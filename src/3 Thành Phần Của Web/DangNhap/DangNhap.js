@@ -129,18 +129,7 @@ function DangNhap(props) {
                   <a href="/dang-ky">Đăng ký?</a>
                 </div>
               </div>
-              <div className="group_icons">
-                <div className="icon_item">
-                  <img src="https://www.facebook.com/images/fb_icon_325x325.png" />
-                  <span type="button">FaceBook</span>
-                </div>
-
-                <div className="icon_item">
-                  <img src="https://theme.hstatic.net/200000118173/1000809265/14/icon-gg__login.png?v=233" />
-
-                  <span type="button">Google</span>
-                </div>
-              </div>
+              <div className="group_icons"></div>
             </form>
           </div>
         </div>
