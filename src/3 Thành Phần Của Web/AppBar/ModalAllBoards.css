@@ -1,21 +1,24 @@
 .ModalAllBoards {
     width: 300px;
+    height: 350px;
+    overflow-y: auto;
 }
-
 .contain-boards {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    
 }
-
 .boards {
-    padding: 20px;
+    
+    padding: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     border-radius: 4px;
     cursor: pointer;
     transition: .2s;
+    
+    
 }
-
 .boards:hover {
     background-color: #ddd;
 }

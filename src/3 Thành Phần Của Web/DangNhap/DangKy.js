@@ -87,7 +87,11 @@ function DangKy(props) {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password.length <= 5) {
-      alert("Mật khẩu lớn hơn 5 kí tự");
+      alert("Vui lòng nhập mật khẩu từ 6 ký tự trở lên");
+      return;
+    }
+    if (fullName.length <= 5) {
+      alert("Vui lòng nhập tên từ 6 ký tự trở lên");
       return;
     }
     try {
